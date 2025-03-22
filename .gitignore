@@ -39,3 +39,6 @@ debug_*.txt
 
 # Benchmark paths
 benchmark-*
+
+# sensitive environment variables
+.env
