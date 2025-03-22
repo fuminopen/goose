@@ -11,6 +11,7 @@
 - Docker Compose
 - Git
 - SSHキー（GitHub等との連携に必要）
+- Make
 
 ### セットアップ手順
 
@@ -20,9 +21,16 @@ git clone git@github.com:fuminopen/goose.git
 cd goose
 ```
 
-2. 環境変数の設定
-必要な環境変数を`.env`ファイルに設定します：
+2. 環境設定とビルド
+```bash
+make setup
+```
+このコマンドは以下の処理を実行します：
+- `.env.example`から`.env`ファイルを作成
+- Dockerイメージのビルド
 
+3. 環境変数の設定
+`.env`ファイルを編集して、必要な環境変数を設定します：
 ```bash
 # .env
 ANTHROPIC_API_KEY=your_api_key
@@ -32,14 +40,9 @@ GIT_AUTHOR_NAME=your_name
 GIT_AUTHOR_EMAIL=your_email
 ```
 
-3. Dockerイメージのビルド
+4. コンテナへの接続
 ```bash
-docker-compose -f documentation/docs/docker/docker-compose.yml build
-```
-
-4. Dockerコンテナへの接続
-```bash
-docker-compose -f documentation/docs/docker/docker-compose.yml run --rm goose-cli
+make up
 ```
 
 ### 注意事項
