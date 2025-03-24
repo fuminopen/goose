@@ -1,0 +1,55 @@
+{
+    "family": "goose-cli",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "goose-cli",
+            "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/goose-cli:latest",
+            "essential": true,
+            "environment": [
+                {
+                    "name": "OOSE_HOME",
+                    "value": "/root/.goose"
+                },
+                {
+                    "name": "EDITOR",
+                    "value": "vim"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "ANTHROPIC_API_KEY",
+                    "valueFrom": "arn:aws:ssm:${AWS_REGION}:${AWS_ACCOUNT_ID}:parameter/goose/ANTHROPIC_API_KEY"
+                },
+                {
+                    "name": "GOOSE_PROVIDER",
+                    "valueFrom": "arn:aws:ssm:${AWS_REGION}:${AWS_ACCOUNT_ID}:parameter/goose/GOOSE_PROVIDER"
+                },
+                {
+                    "name": "GOOSE_MODEL",
+                    "valueFrom": "arn:aws:ssm:${AWS_REGION}:${AWS_ACCOUNT_ID}:parameter/goose/GOOSE_MODEL"
+                },
+                {
+                    "name": "GIT_AUTHOR_NAME",
+                    "valueFrom": "arn:aws:ssm:${AWS_REGION}:${AWS_ACCOUNT_ID}:parameter/goose/GIT_AUTHOR_NAME"
+                },
+                {
+                    "name": "GIT_AUTHOR_EMAIL",
+                    "valueFrom": "arn:aws:ssm:${AWS_REGION}:${AWS_ACCOUNT_ID}:parameter/goose/GIT_AUTHOR_EMAIL"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/goose-cli",
+                    "awslogs-region": "${AWS_REGION}",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ]
+}
