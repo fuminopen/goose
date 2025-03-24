@@ -12,6 +12,7 @@
 - Git
 - SSHキー（GitHub等との連携に必要）
 - Make
+- AWS CLI
 
 ### セットアップ手順
 
